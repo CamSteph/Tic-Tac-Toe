@@ -102,6 +102,7 @@ const RightWrapper = styled.section`
     &:hover {
       color: #000;
       background: #fff;
+      // testing
     }
   }
 `;
