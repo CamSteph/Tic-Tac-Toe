@@ -1,8 +1,8 @@
 import React from 'react';
-import styled, { keyframes} from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { customStyles } from '../../utils/customStyles';
-import googleFonts from '../../utils/googleFonts.module.css';
 import { FaArrowRight } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const slideDown = keyframes`
   from {
@@ -26,7 +26,7 @@ const Container = styled.main`
   width: 100%;
   height: 100vh;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   grid-template-rows: auto;
   grid-gap: 25px;
   padding: 0 25px;
@@ -34,10 +34,8 @@ const Container = styled.main`
   color: rgb(235, 235, 235);
   position: relative;
   overflow: hidden;
-
-  background-color: #0e1118;
   opacity: 1;
-  background-image:  linear-gradient(#050507 4px, transparent 4px), linear-gradient(to right, #050507 4px, #0e1118 4px);
+  background-image:  linear-gradient(${customStyles.dark_02} 4px, transparent 4px), linear-gradient(to right, ${customStyles.dark_02} 4px, ${customStyles.dark_01} 4px);
   background-size: 80px 80px;
 
   ::before {
@@ -45,7 +43,7 @@ const Container = styled.main`
     position: absolute;
     top: -220px;
     left: -120px;
-    color: #050507;
+    color: ${customStyles.dark_02};
     font-family: 'Secular One';
     font-weight: 900;
     font-size: 580px;
@@ -57,19 +55,12 @@ const Container = styled.main`
     position: absolute;
     right: -155px;
     bottom: -100px;
-    color: #050507;
+    color: ${customStyles.dark_02};
     font-family: 'Secular One';
     font-weight: 900;
     font-size: 450px;
     z-index: 0;
   }
-`;
-
-const LeftWrapper = styled.section`
-  height: 60%;
-  width: 100%;
-  background: transparent;
-  z-index: 5;
 `;
 
 const RightWrapper = styled.section`
@@ -78,7 +69,7 @@ const RightWrapper = styled.section`
   background: transparent;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   z-index: 5;
 
@@ -91,18 +82,17 @@ const RightWrapper = styled.section`
     align-items: center;
     justify-content: space-between;
     transition: all .4s ease;
-    color: #fff;
+    color: ${customStyles.light_01};
     background: transparent;
-    border: 1px solid #fff;
+    border: 1px solid ${customStyles.light_01};
 
     .right-arrow {
       margin-left: 5px;
     }
 
     &:hover {
-      color: #000;
-      background: #fff;
-      // testing
+      color: ${customStyles.dark_03};
+      background: ${customStyles.light_01};
     }
   }
 `;
@@ -111,23 +101,23 @@ const MsgWrapper = styled.div`
   line-height: 350%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-evenly;
   min-height: 200px;
 
   .welcome-msg {
     font-size: 2.8rem;
-    animation: ${slideDown} 2s;
+    animation: ${slideDown} 1.5s;
 
     strong {
-      color: #689ac2;
+      color: ${customStyles.accent_01};
     }
   }
 
   .get-started-msg {
     font-weight: 900;
     opacity: .75;
-    animation: ${slideRight} 2s;
+    animation: ${slideRight} 1.5s;
     animation-delay: .5s;
   }
 
@@ -136,18 +126,17 @@ const MsgWrapper = styled.div`
 const HomePage = () => {
   return (
     <Container>
-      <LeftWrapper>
-
-      </LeftWrapper>
       <RightWrapper>
         <MsgWrapper>
-          <h1 className='welcome-msg'>Welcome to <strong>TIC TAC TOE</strong>!</h1>
-          <p className="get-started-msg">Click the button below to begin the game.</p>
+          <h1 className='welcome-msg'>Welcome to <strong>TIC TAC TOE</strong></h1>
+          <p className="get-started-msg">To get started, click the button below!</p>
         </MsgWrapper>
-        <button className="get-started-btn">
-          Get Started
-          <FaArrowRight className='right-arrow' />
-        </button>
+        <Link to='/game-setup'>
+          <button className="get-started-btn">
+            Get Started
+            <FaArrowRight className='right-arrow' />
+          </button>
+        </Link>
       </RightWrapper>
     </Container>
   )
