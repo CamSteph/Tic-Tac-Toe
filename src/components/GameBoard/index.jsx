@@ -19,7 +19,7 @@ const BoardContainer = styled.main`
 `;
 
 const Tile = styled.div`
-  height: 10rem;
+  height: 14rem;
   width: 100%;
   min-width: 200px;
   max-width: 350px;
@@ -63,17 +63,21 @@ const Tile = styled.div`
     border-bottom: none;
   }  
 
-  &:hover::before {
+  /* &:hover::before {
     content: 'X';
     position: absolute;
     color: ${sessionStorage.getItem('user-color') || '#01b3e0'};
     opacity: .5;
-    font-size: 5.5rem;
+    font-size: 9.5rem;
     font-family: 'Secular One', sans-serif;
+  } */
+
+  &:hover {
+    background: ${customStyles.dark_01};
   }
 
   .selector {
-    font-size: 5.5rem;
+    font-size: 9.5rem;
     font-family: 'Secular One', sans-serif;
     text-align: center;
     color: ${customStyles.light_01};

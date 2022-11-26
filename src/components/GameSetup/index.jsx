@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from 'react';
+import React, { useRef, useState, useContext, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { customStyles } from '../../utils/customStyles';
 import TicTacToeImg from '../../assets/tic-tac-toe.png';
@@ -153,6 +153,11 @@ const GameSetup = () => {
   const userDetails = useContext(UserContext);
   const setUserDetails = useContext(UserDispatchContext);
 
+  useEffect(() => {
+    // prevents username from being set to 'undefined' on autofill
+    sessionStorage.setItem('username', inputRef.current.value);
+  }, []);
+
   const handleInputFocus = () => {
     const currentValue = inputRef.current.value;
     if ( document.activeElement === inputRef.current ) {
@@ -177,11 +182,12 @@ const GameSetup = () => {
       return;
     }
     setInputErrors('');
-    sessionStorage.setItem('username', userDetails.username);
+    sessionStorage.setItem('username', username);
   };
 
   const handleInputChange = () => {
     const value = inputRef.current.value;
+    console.log(value);
     validateUsername(value);
     setUserDetails({'username': value});
   };
@@ -226,6 +232,7 @@ const GameSetup = () => {
             onFocus={handleInputFocus} 
             onBlur={handleInputFocus}
             onChange={handleInputChange}
+            autoComplete="off"
           />
           <span className='username-error' ref={errorRef}>{inputErrors}</span>
         </div>
