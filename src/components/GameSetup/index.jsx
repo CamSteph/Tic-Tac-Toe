@@ -97,6 +97,8 @@ const InputLabel = styled.label`
   top: ${props => props.isFocused ? '5px' : '35px'};
   z-index: 10;
   transition: all .4s ease;
+  font-size: ${props => props.isFocused ? '12px' : '16px'};
+  opacity: ${props => props.isFocused ? '.5' : '1'};
 `;
 
 const ContinueBtn = styled.button`
@@ -175,6 +177,7 @@ const GameSetup = () => {
       return;
     }
     setInputErrors('');
+    sessionStorage.setItem('username', userDetails.username);
   };
 
   const handleInputChange = () => {
@@ -191,7 +194,7 @@ const GameSetup = () => {
 
   const goToBoard = () => {
     if ( !inputErrors && userDetails.username ) {
-      navigate('/');
+      navigate('/play');
     }
     else if ( !inputErrors && !userDetails.username ) {
       errorRef.current.innerText = 'Username must not be empty';

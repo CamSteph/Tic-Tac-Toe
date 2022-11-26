@@ -5,7 +5,17 @@ const UserDispatchContext = createContext(undefined);
 
 const UserProvider = ({children}) => {
 
-  const [userDetails, setUserDetails] = useState({});
+  const setUsername = () => {
+    const storedUsername = sessionStorage.getItem('username');
+    if ( storedUsername ) {
+      return {
+        username: storedUsername,
+      }
+    }
+    return {};
+  };
+
+  const [userDetails, setUserDetails] = useState(setUsername());
 
   return (
     <UserContext.Provider value={userDetails}>

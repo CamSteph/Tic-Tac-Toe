@@ -63,7 +63,7 @@ const Container = styled.main`
   }
 `;
 
-const RightWrapper = styled.section`
+const Wrapper = styled.section`
   height: 60%;
   width: 100%;
   background: transparent;
@@ -116,6 +116,7 @@ const MsgWrapper = styled.div`
 
   .get-started-msg {
     font-weight: 900;
+    font-size: 20px;
     opacity: .75;
     animation: ${slideRight} 1.5s;
     animation-delay: .5s;
@@ -126,7 +127,7 @@ const MsgWrapper = styled.div`
 const HomePage = () => {
   return (
     <Container>
-      <RightWrapper>
+      <Wrapper>
         <MsgWrapper>
           <h1 className='welcome-msg'>Welcome to <strong>TIC TAC TOE</strong></h1>
           <p className="get-started-msg">To get started, click the button below!</p>
@@ -137,7 +138,7 @@ const HomePage = () => {
             <FaArrowRight className='right-arrow' />
           </button>
         </Link>
-      </RightWrapper>
+      </Wrapper>
     </Container>
   )
 };
