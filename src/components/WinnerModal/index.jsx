@@ -15,9 +15,10 @@ const Container = styled.div`
   top: 0;
   left: 0;
   z-index: 10;
-`;
+  `;
 
 const Modal = styled.main`
+  border-radius: 15px;
   width: 75%;
   min-width: 600px;
   min-height: 60vh;
@@ -44,8 +45,7 @@ const OptionsSection = styled.div`
 
 const OptionBtn = styled.button`
   outline: none;
-  border: none;
-  padding: 10px 40px;
+  padding: 10px ${props => props.invertedBtn ? '45px' : '40px'};
   border: 1px solid ${ props => props.invertedBtn ? customStyles.light_01 : customStyles.light_01};
   background: ${props => props.invertedBtn ? customStyles.light_01 : 'transparent'};
   color: ${props => props.invertedBtn ? customStyles.dark_03 : customStyles.light_01};
@@ -54,44 +54,61 @@ const OptionBtn = styled.button`
   transition: padding .5s ease;
 
   &:hover {
-    padding: 10px 60px;
+    padding: 10px ${props => props.invertedBtn ? '65px' : '60px'};;
   }
 `;
 
 const RecordSection = styled.div`
   width: auto;
+  padding-top: 5px;
 
+  strong {
+    color: ${customStyles.accent_01};
+    font-size: 20px;
+  }
 `;
 
-const WinnerModal = ({winningUser}) => {
+const WinnerModal = ({
+  winningUser,
+  userDetails,
+  setWinner,
+}) => {
 
   const navigate = useNavigate();
 
   const winnerIsUser = () => {
     const currentUser = sessionStorage.getItem('username');
-    console.log(currentUser);
     return winningUser === currentUser;
   };
 
   const goToHomePage = () => {
-    navigate('/');
+    if ( confirm('Are you sure you want to leave? Your data will be lost!') ) {
+      sessionStorage.clear();
+      navigate('/');
+    }
+  };
+
+  const refreshPage = () => {
+    navigate(0);
   }
 
   return (
     <Container>
       <Modal>
         {
-          winnerIsUser() ?
-            (<Msg winner={true}>You win!</Msg>)
-          :
-            (<Msg>You lost!</Msg>)
+          winnerIsUser() ? (
+              <Msg winner={true}>You win!</Msg>
+            ) : (
+              <Msg>You lost!</Msg>
+            )
         }
         <RecordSection>
-          Wins: 3, Losses: 2
+          {/* Wins: {userDetails.wins || 0}, Losses: {userDetails.losses || 0} */}
+          Wins: <strong>{sessionStorage.getItem('wins') || 0}</strong>, Losses: <strong>{sessionStorage.getItem('losses') || 0}</strong>, Draws: <strong>{sessionStorage.getItem('draws') || 0}</strong>
         </RecordSection>
         <OptionsSection>
-          <OptionBtn>Play Again</OptionBtn>
-          <OptionBtn invertedBtn={true} onClick={goToHomePage}>Go Home</OptionBtn>
+          <OptionBtn invertedBtn={true} onClick={refreshPage}>Play Again</OptionBtn>
+          <OptionBtn onClick={goToHomePage}>Leave Game</OptionBtn>
         </OptionsSection>
       </Modal>
     </Container>

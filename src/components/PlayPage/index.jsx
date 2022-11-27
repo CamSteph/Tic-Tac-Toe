@@ -5,6 +5,7 @@ import { customStyles } from '../../utils/customStyles';
 import GameBoard from '../GameBoard';
 import UserImg from '../../assets/man01.png';
 import BotImg from '../../assets/robot01.png';
+import { Navigate } from 'react-router-dom';
 
 const Container = styled.div`
   width: 100%;
@@ -82,6 +83,10 @@ const BotImage = styled.img`
 `;
 
 const PlayPage = () => {
+
+  if ( !sessionStorage.getItem('username') ) {
+    return (<Navigate to='/' replace />);
+  }
 
   const userDetails = useContext(UserContext);
 

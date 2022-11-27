@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { customStyles } from '../../utils/customStyles';
 import TicTacToeImg from '../../assets/tic-tac-toe.png';
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { UserContext, UserDispatchContext } from '../../containers/UserProvider';
 
 const slideDown = keyframes`
@@ -144,6 +144,10 @@ const GoBack = styled.button`
 
 const GameSetup = () => {
 
+  if ( sessionStorage.getItem('username') ) {
+    return (<Navigate to='/play' replace />);
+  }
+
   const [inputFocused, setInputFocused] = useState(false);
   const [inputErrors, setInputErrors] = useState('');
 
@@ -182,12 +186,12 @@ const GameSetup = () => {
       return;
     }
     setInputErrors('');
-    sessionStorage.setItem('username', username);
+    // sessionStorage.setItem('username', username);
   };
 
   const handleInputChange = () => {
     const value = inputRef.current.value;
-    console.log(value);
+    // console.log(value);
     validateUsername(value);
     setUserDetails({'username': value});
   };
@@ -200,6 +204,7 @@ const GameSetup = () => {
 
   const goToBoard = () => {
     if ( !inputErrors && userDetails.username ) {
+      sessionStorage.setItem('username', userDetails.username);
       navigate('/play');
     }
     else if ( !inputErrors && !userDetails.username ) {

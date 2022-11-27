@@ -1,8 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { customStyles } from '../../utils/customStyles';
 import WinnerModal from '../WinnerModal';
-import { UserContext } from '../../containers/UserProvider';
+import { UserContext, UserDispatchContext } from '../../containers/UserProvider';
+import CountdownTimer from '../CountdownTimer';
 
 const BoardContainer = styled.main`
   width: 90%;
@@ -100,6 +101,8 @@ const GameBoard = ({botName}) => {
 
   const [winner, setWinner] = useState(null);
   const userDetails = useContext(UserContext);
+  const setUserDetails = useContext(UserDispatchContext);
+  const [gameHasStarted, setGameHasStarted] = useState(false);
 
   const arrOfTiles = [
     '',
@@ -113,55 +116,113 @@ const GameBoard = ({botName}) => {
     '',
   ];
 
-  const checkWinner = () => {
-      if ( arrOfTiles[0] && arrOfTiles[0] === arrOfTiles[1] && arrOfTiles[1] === arrOfTiles[2] ) {
+  const tallyScore = (winningMark) => {
+
+    const updateResults = (data, column) => {
+
+      switch ( column ) {
+        case 'wins':
+          setUserDetails(prev => {
+            const newWinCount = Number( data ) > 0 ? Number( data ) + 1 : 1;
+            sessionStorage.setItem('wins', newWinCount);
+            return {...prev, 'wins': newWinCount, 'losses': prev.losses};
+          });
+          break;
+        case 'losses':
+          setUserDetails(prev => {
+            const newLossCount = Number( data ) > 0 ? Number( data ) + 1 : 1;
+            sessionStorage.setItem('losses', newLossCount);
+            return {...prev, 'losses': newLossCount, 'wins': prev.wins};
+          });
+          break;
+        case 'draws':
+          setUserDetails(prev => {
+            const newDrawCount = Number( data ) > 0 ? Number( data ) + 1 : 1;
+            sessionStorage.setItem('draws', newDrawCount);
+            return {...prev, 'draws': newDrawCount};
+          });
+          break;
+
+        default: return;
+      }
+    };
+
+    if ( winningMark === 'X' ) {
+      updateResults(sessionStorage.getItem('wins'), 'wins');
+    }
+    else if ( winningMark === 'O' ) {
+      updateResults(sessionStorage.getItem('losses'), 'losses');
+    }
+    else {
+      updateResults(sessionStorage.getItem('draws'), 'draws');
+    }
+
+  };
+
+  const checkWinner = (mark) => {
+      console.log(mark);
+      if ( arrOfTiles[0] === mark && arrOfTiles[0] === arrOfTiles[1] && arrOfTiles[1] === arrOfTiles[2] ) {
         setWinner(arrOfTiles[0]);
+        tallyScore(arrOfTiles[0]);
         return true;
       }
-      else if ( arrOfTiles[3] && arrOfTiles[3] === arrOfTiles[4] && arrOfTiles[4] === arrOfTiles[5] ) {
+      else if ( arrOfTiles[3] === mark && arrOfTiles[3] === arrOfTiles[4] && arrOfTiles[4] === arrOfTiles[5] ) {
         setWinner(arrOfTiles[3]);
+        tallyScore(arrOfTiles[3]);
         return true;
       }
-      else if ( arrOfTiles[6] && arrOfTiles[6] === arrOfTiles[7] && arrOfTiles[7] === arrOfTiles[8]) {
+      else if ( arrOfTiles[6] === mark && arrOfTiles[6] === arrOfTiles[7] && arrOfTiles[7] === arrOfTiles[8]) {
         setWinner(arrOfTiles[6]);
+        tallyScore(arrOfTiles[6]);
         return true;
       }
-      else if ( arrOfTiles[0] && arrOfTiles[0] === arrOfTiles[3] && arrOfTiles[3] === arrOfTiles[6]) {
+      else if ( arrOfTiles[0] === mark && arrOfTiles[0] === arrOfTiles[3] && arrOfTiles[3] === arrOfTiles[6]) {
         setWinner(arrOfTiles[0]);
+        tallyScore(arrOfTiles[0]);
         return true;
       }
-      else if ( arrOfTiles[1] && arrOfTiles[1] === arrOfTiles[4] && arrOfTiles[4] === arrOfTiles[7]) {
+      else if ( arrOfTiles[1] === mark && arrOfTiles[1] === arrOfTiles[4] && arrOfTiles[4] === arrOfTiles[7]) {
         setWinner(arrOfTiles[1]);
+        tallyScore(arrOfTiles[1]);
         return true;
       }
-      else if ( arrOfTiles[2] && arrOfTiles[2] === arrOfTiles[5] && arrOfTiles[5] === arrOfTiles[8]) {
+      else if ( arrOfTiles[2] === mark && arrOfTiles[2] === arrOfTiles[5] && arrOfTiles[5] === arrOfTiles[8]) {
         setWinner(arrOfTiles[2]);
+        tallyScore(arrOfTiles[2]);
         return true;
       }
-      else if ( arrOfTiles[2] && arrOfTiles[2] === arrOfTiles[4] && arrOfTiles[4] === arrOfTiles[6]) {
+      else if ( arrOfTiles[2] === mark && arrOfTiles[2] === arrOfTiles[4] && arrOfTiles[4] === arrOfTiles[6]) {
         setWinner(arrOfTiles[2]);
+        tallyScore(arrOfTiles[2]);
         return true;
       }
-      else if ( arrOfTiles[0] && arrOfTiles[0] === arrOfTiles[4] && arrOfTiles[4] === arrOfTiles[8]) {
+      else if ( arrOfTiles[0] === mark && arrOfTiles[0] === arrOfTiles[4] && arrOfTiles[4] === arrOfTiles[8]) {
         setWinner(arrOfTiles[0]);
+        tallyScore(arrOfTiles[0]);
         return true;
       }
       return false;
+
   };
 
   const handleBotMove = () => {
       if ( !winner ) {
         for ( let i = 0; i < arrOfTiles.length; i++ ) {
           const randomSpace = Math.floor(Math.random() * 9);
-          if ( !arrOfTiles[randomSpace] ) {
-            const tileEl = document.getElementById(`tile-${randomSpace + 1}`);
+          const tileEl = document.getElementById(`tile-${randomSpace + 1}`);
+          if ( !arrOfTiles[randomSpace] && !tileEl.hasChildNodes()) {
             const selectorEl = document.createElement('span');
             selectorEl.classList.add('selector');
             selectorEl.classList.add('o-user');
             selectorEl.innerText = 'O';
             tileEl.appendChild(selectorEl);
             arrOfTiles[randomSpace] = 'O';
-            setTimeout(() => checkWinner(), 500);
+
+            setTimeout(() => {
+              if ( !winner ) {
+                checkWinner('O');
+              }
+          }, 500);
             return;
           }
         }
@@ -169,31 +230,60 @@ const GameBoard = ({botName}) => {
   };
 
   const handleTileClick = (e, i) => {
-    if ( !e.target.hasChildNodes() && !winner) {
+    if ( !e.target.hasChildNodes() && !winner ) {
       const el = document.createElement('span');
       el.classList.add('selector');
       el.classList.add('x-user');
       el.innerText = 'X';
       e.target.appendChild(el);
       arrOfTiles[i] = 'X';
-
+      
       setTimeout(() => {
-        if ( !checkWinner() ) handleBotMove();
+        if ( !checkWinner('X') ) {
+          handleBotMove();
+        }
       }, 500);
     }
   };
 
+  useEffect(() => {
+    console.log('useEffect: ', sessionStorage.getItem('wins'));
+  }, [])
+
   return (
     <>
-      {winner && <WinnerModal winningUser={winner === 'X' ? userDetails.username : botName } />}
-      <BoardContainer>
+      {
+        winner && (
+        <WinnerModal 
+          winningUser={winner.toUpperCase() === 'X' ? userDetails.username : botName } 
+          userDetails={userDetails} 
+          setWinner={setWinner} 
+        />)
+      }
+      {
+        !gameHasStarted ? (
+          <CountdownTimer setGameHasStarted={setGameHasStarted} timeValue={1000} />
+        ) : (
+          <BoardContainer>
+            {arrOfTiles.map((_, i) => (
+              <Tile key={i} onClick={(e) => handleTileClick(e, i)} id={`tile-` + (i + 1)}>
+              </Tile>
+            ))}
+          </BoardContainer>
+        )
+      }
+      {/* <BoardContainer>
         {
-          arrOfTiles.map((_, i) => (
-            <Tile key={i} onClick={(e) => handleTileClick(e, i)} id={`tile-` + (i + 1)}>
-            </Tile>
-          ))
+          !gameHasStarted ? (
+            <CountdownTimer setGameHasStarted={setGameHasStarted} timeValue={1000} />
+          ) : (
+            arrOfTiles.map((_, i) => (
+              <Tile key={i} onClick={(e) => handleTileClick(e, i)} id={`tile-` + (i + 1)}>
+              </Tile>
+            ))
+          )
         }
-      </BoardContainer>
+      </BoardContainer> */}
     </>
   );
 };

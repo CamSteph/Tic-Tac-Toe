@@ -106,10 +106,13 @@ const MsgWrapper = styled.div`
   min-height: 200px;
 
   .welcome-msg {
+    font-family: 'Secular One';
     font-size: 2.8rem;
     animation: ${slideDown} 1.5s;
-
+    letter-spacing: 1.7px;
+    
     strong {
+      font-family: 'Secular One';
       color: ${customStyles.accent_01};
     }
   }
