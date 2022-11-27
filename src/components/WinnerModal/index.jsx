@@ -29,7 +29,18 @@ const Modal = styled.main`
 `;
 
 const Msg = styled.h1`
-  color: ${props => props.winner ? '#4fce84' : '#ee6f59'};
+  color: ${props => {
+    switch(props.status) {
+      case 'winner':
+        return '#4fce84';
+      case 'loser':
+        return '#ee6f59';
+      case 'draw':
+        return '#fff555';
+      default:
+        return customStyles.light_01;
+    }
+  }};
   text-transform: uppercase;
   font-family: 'Secular One';
 `;
@@ -72,6 +83,7 @@ const WinnerModal = ({
   winningUser,
   userDetails,
   setWinner,
+  isADraw,
 }) => {
 
   const navigate = useNavigate();
@@ -97,9 +109,13 @@ const WinnerModal = ({
       <Modal>
         {
           winnerIsUser() ? (
-              <Msg winner={true}>You win!</Msg>
-            ) : (
-              <Msg>You lost!</Msg>
+              <Msg status='winner'>You win!</Msg>
+            ) : 
+            isADraw  ? (
+              <Msg status='draw'>It's a DRAW!</Msg>
+            ) : 
+            (
+              <Msg status='loser'>You lost!</Msg>
             )
         }
         <RecordSection>

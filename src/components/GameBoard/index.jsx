@@ -100,6 +100,7 @@ const Tile = styled.div`
 const GameBoard = ({botName}) => {
 
   const [winner, setWinner] = useState(null);
+  const [isADraw, setIsADraw] = useState(false);
   const userDetails = useContext(UserContext);
   const setUserDetails = useContext(UserDispatchContext);
   const [gameHasStarted, setGameHasStarted] = useState(false);
@@ -160,7 +161,6 @@ const GameBoard = ({botName}) => {
   };
 
   const checkWinner = (mark) => {
-      console.log(mark);
       if ( arrOfTiles[0] === mark && arrOfTiles[0] === arrOfTiles[1] && arrOfTiles[1] === arrOfTiles[2] ) {
         setWinner(arrOfTiles[0]);
         tallyScore(arrOfTiles[0]);
@@ -201,13 +201,19 @@ const GameBoard = ({botName}) => {
         tallyScore(arrOfTiles[0]);
         return true;
       }
+      const areAllValuesSet = arrOfTiles.every(tile => tile.length > 0);
+      console.log('all Values set: ', areAllValuesSet);
+      if ( areAllValuesSet ) {
+        tallyScore('draws');
+        setIsADraw(true);
+      }
       return false;
 
   };
 
   const handleBotMove = () => {
       if ( !winner ) {
-        for ( let i = 0; i < arrOfTiles.length; i++ ) {
+        for ( let i = 0; i < arrOfTiles.length + 80; i++ ) {
           const randomSpace = Math.floor(Math.random() * 9);
           const tileEl = document.getElementById(`tile-${randomSpace + 1}`);
           if ( !arrOfTiles[randomSpace] && !tileEl.hasChildNodes()) {
@@ -222,10 +228,16 @@ const GameBoard = ({botName}) => {
               if ( !winner ) {
                 checkWinner('O');
               }
+              else {
+                return;
+              }
           }, 500);
             return;
           }
         }
+      }
+      else {
+        return;
       }
   };
 
@@ -253,11 +265,12 @@ const GameBoard = ({botName}) => {
   return (
     <>
       {
-        winner && (
+        ( winner || isADraw ) && (
         <WinnerModal 
-          winningUser={winner.toUpperCase() === 'X' ? userDetails.username : botName } 
+          winningUser={winner?.toUpperCase() === 'X' ? userDetails?.username : botName } 
           userDetails={userDetails} 
           setWinner={setWinner} 
+          isADraw={isADraw}
         />)
       }
       {
@@ -272,18 +285,6 @@ const GameBoard = ({botName}) => {
           </BoardContainer>
         )
       }
-      {/* <BoardContainer>
-        {
-          !gameHasStarted ? (
-            <CountdownTimer setGameHasStarted={setGameHasStarted} timeValue={1000} />
-          ) : (
-            arrOfTiles.map((_, i) => (
-              <Tile key={i} onClick={(e) => handleTileClick(e, i)} id={`tile-` + (i + 1)}>
-              </Tile>
-            ))
-          )
-        }
-      </BoardContainer> */}
     </>
   );
 };
