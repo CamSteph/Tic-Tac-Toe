@@ -161,72 +161,200 @@ const GameBoard = ({botName}) => {
   };
 
   const checkWinner = (mark) => {
-      if ( arrOfTiles[0] === mark && arrOfTiles[0] === arrOfTiles[1] && arrOfTiles[1] === arrOfTiles[2] ) {
-        setWinner(arrOfTiles[0]);
-        tallyScore(arrOfTiles[0]);
-        return true;
-      }
-      else if ( arrOfTiles[3] === mark && arrOfTiles[3] === arrOfTiles[4] && arrOfTiles[4] === arrOfTiles[5] ) {
-        setWinner(arrOfTiles[3]);
-        tallyScore(arrOfTiles[3]);
-        return true;
-      }
-      else if ( arrOfTiles[6] === mark && arrOfTiles[6] === arrOfTiles[7] && arrOfTiles[7] === arrOfTiles[8]) {
-        setWinner(arrOfTiles[6]);
-        tallyScore(arrOfTiles[6]);
-        return true;
-      }
-      else if ( arrOfTiles[0] === mark && arrOfTiles[0] === arrOfTiles[3] && arrOfTiles[3] === arrOfTiles[6]) {
-        setWinner(arrOfTiles[0]);
-        tallyScore(arrOfTiles[0]);
-        return true;
-      }
-      else if ( arrOfTiles[1] === mark && arrOfTiles[1] === arrOfTiles[4] && arrOfTiles[4] === arrOfTiles[7]) {
-        setWinner(arrOfTiles[1]);
-        tallyScore(arrOfTiles[1]);
-        return true;
-      }
-      else if ( arrOfTiles[2] === mark && arrOfTiles[2] === arrOfTiles[5] && arrOfTiles[5] === arrOfTiles[8]) {
-        setWinner(arrOfTiles[2]);
-        tallyScore(arrOfTiles[2]);
-        return true;
-      }
-      else if ( arrOfTiles[2] === mark && arrOfTiles[2] === arrOfTiles[4] && arrOfTiles[4] === arrOfTiles[6]) {
-        setWinner(arrOfTiles[2]);
-        tallyScore(arrOfTiles[2]);
-        return true;
-      }
-      else if ( arrOfTiles[0] === mark && arrOfTiles[0] === arrOfTiles[4] && arrOfTiles[4] === arrOfTiles[8]) {
-        setWinner(arrOfTiles[0]);
-        tallyScore(arrOfTiles[0]);
-        return true;
-      }
-      const areAllValuesSet = arrOfTiles.every(tile => tile.length > 0);
-      console.log('all Values set: ', areAllValuesSet);
-      if ( areAllValuesSet ) {
-        tallyScore('draws');
-        setIsADraw(true);
-      }
-      return false;
-
+    if ( arrOfTiles[0] === mark && arrOfTiles[0] === arrOfTiles[1] && arrOfTiles[1] === arrOfTiles[2] ) {
+      setWinner(arrOfTiles[0]);
+      tallyScore(arrOfTiles[0]);
+      return true;
+    }
+    else if ( arrOfTiles[3] === mark && arrOfTiles[3] === arrOfTiles[4] && arrOfTiles[4] === arrOfTiles[5] ) {
+      setWinner(arrOfTiles[3]);
+      tallyScore(arrOfTiles[3]);
+      return true;
+    }
+    else if ( arrOfTiles[6] === mark && arrOfTiles[6] === arrOfTiles[7] && arrOfTiles[7] === arrOfTiles[8]) {
+      setWinner(arrOfTiles[6]);
+      tallyScore(arrOfTiles[6]);
+      return true;
+    }
+    else if ( arrOfTiles[0] === mark && arrOfTiles[0] === arrOfTiles[3] && arrOfTiles[3] === arrOfTiles[6]) {
+      setWinner(arrOfTiles[0]);
+      tallyScore(arrOfTiles[0]);
+      return true;
+    }
+    else if ( arrOfTiles[1] === mark && arrOfTiles[1] === arrOfTiles[4] && arrOfTiles[4] === arrOfTiles[7]) {
+      setWinner(arrOfTiles[1]);
+      tallyScore(arrOfTiles[1]);
+      return true;
+    }
+    else if ( arrOfTiles[2] === mark && arrOfTiles[2] === arrOfTiles[5] && arrOfTiles[5] === arrOfTiles[8]) {
+      setWinner(arrOfTiles[2]);
+      tallyScore(arrOfTiles[2]);
+      return true;
+    }
+    else if ( arrOfTiles[2] === mark && arrOfTiles[2] === arrOfTiles[4] && arrOfTiles[4] === arrOfTiles[6]) {
+      setWinner(arrOfTiles[2]);
+      tallyScore(arrOfTiles[2]);
+      return true;
+    }
+    else if ( arrOfTiles[0] === mark && arrOfTiles[0] === arrOfTiles[4] && arrOfTiles[4] === arrOfTiles[8]) {
+      setWinner(arrOfTiles[0]);
+      tallyScore(arrOfTiles[0]);
+      return true;
+    }
+    const areAllValuesSet = arrOfTiles.every(tile => tile.length > 0);
+    if ( areAllValuesSet ) {
+      tallyScore('draws');
+      setIsADraw(true);
+    }
+    return false;
   };
+
+  const autoDefenseCheck = (markToCheck) => {
+    if ( arrOfTiles[0] === markToCheck && arrOfTiles[0] === arrOfTiles[1] && !arrOfTiles[2]) {
+      return 2;
+    }
+    else if ( arrOfTiles[1] === markToCheck && arrOfTiles[1] === arrOfTiles[2] && !arrOfTiles[0] ) {
+      return 0;
+    }
+    else if ( arrOfTiles[3] === markToCheck && arrOfTiles[3] === arrOfTiles[4] && !arrOfTiles[5] ) {
+      return 5;
+    }
+    else if ( arrOfTiles[4] === markToCheck && arrOfTiles[4] === arrOfTiles[5] && !arrOfTiles[3] ) {
+      return 3;
+    }
+    else if ( arrOfTiles[6] === markToCheck && arrOfTiles[6] === arrOfTiles[7] && !arrOfTiles[8] ) {
+      return 8;
+    }
+    else if ( arrOfTiles[7] === markToCheck && arrOfTiles[7] === arrOfTiles[8] && !arrOfTiles[6] ) {
+      return 6;
+    }
+    else if ( arrOfTiles[0] === markToCheck && arrOfTiles[0] === arrOfTiles[3] && !arrOfTiles[6] ) {
+      return 6;
+    }
+    else if ( arrOfTiles[3] === markToCheck && arrOfTiles[3] === arrOfTiles[6] && !arrOfTiles[0] ) {
+      return 0;
+    }
+    else if ( arrOfTiles[1] === markToCheck && arrOfTiles[1] === arrOfTiles[4] && !arrOfTiles[7] ) {
+      return 7;
+    }
+    else if ( arrOfTiles[4] === markToCheck && arrOfTiles[4] === arrOfTiles[7] && !arrOfTiles[0] ) {
+      return 0;
+    }
+    else if ( arrOfTiles[2] === markToCheck && arrOfTiles[2] === arrOfTiles[5] && !arrOfTiles[8] ) {
+      return 8;
+    }
+    else if ( arrOfTiles[4] === markToCheck && arrOfTiles[4] === arrOfTiles[8] && !arrOfTiles[0] ) {
+      return 0;
+    }
+    else if ( arrOfTiles[0] === markToCheck && arrOfTiles[0] === arrOfTiles[4] && !arrOfTiles[8] ) {
+      return 8;
+    }
+    else if ( arrOfTiles[4] === markToCheck && arrOfTiles[4] === arrOfTiles[8] && !arrOfTiles[0] ) {
+      return 0;
+    }
+    else if ( arrOfTiles[2] === markToCheck && arrOfTiles[2] === arrOfTiles[4] && !arrOfTiles[6] ) {
+      return 6;
+    }
+    else if ( arrOfTiles[2] === markToCheck && arrOfTiles[2] === arrOfTiles[6] && !arrOfTiles[4] ) {
+      return 4;
+    }
+    else if ( arrOfTiles[0] === markToCheck && arrOfTiles[0] === arrOfTiles[8] && !arrOfTiles[4] ) {
+      return 4;
+    }
+    else if ( arrOfTiles[0] === markToCheck && arrOfTiles[0] === arrOfTiles[6] && !arrOfTiles[3] ) {
+      return 3;
+    }
+    else if ( arrOfTiles[1] === markToCheck && arrOfTiles[1] === arrOfTiles[7] && !arrOfTiles[4] ) {
+      return 4;
+    }
+    else if ( arrOfTiles[2] === markToCheck && arrOfTiles[2] === arrOfTiles[8] && !arrOfTiles[5] ) {
+      return 4;
+    }
+  };
+
+  const autoOffenseCheck = (markToCheck) => {
+    if ( arrOfTiles[0] === markToCheck && arrOfTiles[0] === arrOfTiles[1] && !arrOfTiles[2]) {
+      return 2;
+    }
+    else if ( arrOfTiles[1] === markToCheck && arrOfTiles[1] === arrOfTiles[2] && !arrOfTiles[0] ) {
+      return 0;
+    }
+    else if ( arrOfTiles[3] === markToCheck && arrOfTiles[3] === arrOfTiles[4] && !arrOfTiles[5] ) {
+      return 5;
+    }
+    else if ( arrOfTiles[4] === markToCheck && arrOfTiles[4] === arrOfTiles[5] && !arrOfTiles[3] ) {
+      return 3;
+    }
+    else if ( arrOfTiles[6] === markToCheck && arrOfTiles[6] === arrOfTiles[7] && !arrOfTiles[8] ) {
+      return 8;
+    }
+    else if ( arrOfTiles[7] === markToCheck && arrOfTiles[7] === arrOfTiles[8] && !arrOfTiles[6] ) {
+      return 6;
+    }
+    else if ( arrOfTiles[0] === markToCheck && arrOfTiles[0] === arrOfTiles[3] && !arrOfTiles[6] ) {
+      return 6;
+    }
+    else if ( arrOfTiles[3] === markToCheck && arrOfTiles[3] === arrOfTiles[6] && !arrOfTiles[0] ) {
+      return 0;
+    }
+    else if ( arrOfTiles[1] === markToCheck && arrOfTiles[1] === arrOfTiles[4] && !arrOfTiles[7] ) {
+      return 7;
+    }
+    else if ( arrOfTiles[4] === markToCheck && arrOfTiles[4] === arrOfTiles[7] && !arrOfTiles[0] ) {
+      return 0;
+    }
+    else if ( arrOfTiles[2] === markToCheck && arrOfTiles[2] === arrOfTiles[5] && !arrOfTiles[8] ) {
+      return 8;
+    }
+    else if ( arrOfTiles[4] === markToCheck && arrOfTiles[4] === arrOfTiles[8] && !arrOfTiles[0] ) {
+      return 0;
+    }
+    else if ( arrOfTiles[0] === markToCheck && arrOfTiles[0] === arrOfTiles[4] && !arrOfTiles[8] ) {
+      return 8;
+    }
+    else if ( arrOfTiles[4] === markToCheck && arrOfTiles[4] === arrOfTiles[8] && !arrOfTiles[0] ) {
+      return 0;
+    }
+    else if ( arrOfTiles[2] === markToCheck && arrOfTiles[2] === arrOfTiles[4] && !arrOfTiles[6] ) {
+      return 6;
+    }
+    else if ( arrOfTiles[2] === markToCheck && arrOfTiles[2] === arrOfTiles[6] && !arrOfTiles[4] ) {
+      return 4;
+    }
+    else if ( arrOfTiles[0] === markToCheck && arrOfTiles[0] === arrOfTiles[8] && !arrOfTiles[4] ) {
+      return 4;
+    }
+    else if ( arrOfTiles[0] === markToCheck && arrOfTiles[0] === arrOfTiles[6] && !arrOfTiles[3] ) {
+      return 3;
+    }
+    else if ( arrOfTiles[1] === markToCheck && arrOfTiles[1] === arrOfTiles[7] && !arrOfTiles[4] ) {
+      return 4;
+    }
+    else if ( arrOfTiles[2] === markToCheck && arrOfTiles[2] === arrOfTiles[8] && !arrOfTiles[5] ) {
+      return 4;
+    }
+  }
 
   const handleBotMove = () => {
       if ( !winner ) {
         for ( let i = 0; i < arrOfTiles.length + 80; i++ ) {
-          const randomSpace = Math.floor(Math.random() * 9);
-          const tileEl = document.getElementById(`tile-${randomSpace + 1}`);
-          if ( !arrOfTiles[randomSpace] && !tileEl.hasChildNodes()) {
+          const winningSpace = autoOffenseCheck('O');
+          const spaceToDefend = autoDefenseCheck('X');
+          console.log(spaceToDefend);
+          const space = Number(winningSpace) >= 0 ? Number(winningSpace) : Number(spaceToDefend) >= 0 ? Number(spaceToDefend) : Math.floor(Math.random() * 9);
+          const tileEl = document.getElementById(`tile-${space + 1}`);
+          if ( !arrOfTiles[space] && !tileEl.hasChildNodes()) {
             const selectorEl = document.createElement('span');
             selectorEl.classList.add('selector');
             selectorEl.classList.add('o-user');
             selectorEl.innerText = 'O';
             tileEl.appendChild(selectorEl);
-            arrOfTiles[randomSpace] = 'O';
+            arrOfTiles[space] = 'O';
 
             setTimeout(() => {
               if ( !winner ) {
                 checkWinner('O');
+                return;
               }
               else {
                 return;
@@ -257,10 +385,6 @@ const GameBoard = ({botName}) => {
       }, 500);
     }
   };
-
-  useEffect(() => {
-    console.log('useEffect: ', sessionStorage.getItem('wins'));
-  }, [])
 
   return (
     <>

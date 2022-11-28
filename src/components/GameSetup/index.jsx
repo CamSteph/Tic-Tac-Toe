@@ -157,9 +157,39 @@ const GameSetup = () => {
   const userDetails = useContext(UserContext);
   const setUserDetails = useContext(UserDispatchContext);
 
+  const handleInputChange = () => {
+    const value = inputRef.current.value;
+    validateUsername(value);
+    setUserDetails({'username': value});
+  };
+
   useEffect(() => {
-    // prevents username from being set to 'undefined' on autofill
-    sessionStorage.setItem('username', inputRef.current.value);
+    const keyDownHandler = (e) => {
+      if (  e.key === 'Enter' ) {
+        const value = inputRef?.current?.value;
+        if ( !value ) {
+          setInputErrors('Username must not be empty');
+          return;
+        }
+        else if ( value.length < 7 ) {
+          setInputErrors('Username must be at least 7 characters');
+          return;
+        }
+        else if ( value.length > 50 ) {
+          setInputErrors('Username cannot be more than 50 characters');
+          return;
+        }
+        setUserDetails({'username': value});
+        sessionStorage.setItem('username', value);
+      }
+    };
+
+    document.addEventListener('keydown', keyDownHandler);
+
+    return () => {
+      document.removeEventListener('keydown', keyDownHandler);
+    }
+
   }, []);
 
   const handleInputFocus = () => {
@@ -186,14 +216,7 @@ const GameSetup = () => {
       return;
     }
     setInputErrors('');
-    // sessionStorage.setItem('username', username);
-  };
-
-  const handleInputChange = () => {
-    const value = inputRef.current.value;
-    // console.log(value);
-    validateUsername(value);
-    setUserDetails({'username': value});
+    return true;
   };
 
   const navigate = useNavigate();

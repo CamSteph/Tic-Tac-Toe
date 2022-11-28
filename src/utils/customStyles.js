@@ -5,5 +5,5 @@ export const customStyles = {
   "dark_03" : "#000",
   "light_01" : "#fff",
   "light_02" : "#ccc",
-  "accent_01" : "#689ac2",
+  "accent_01" : "#00CED1",
 }
