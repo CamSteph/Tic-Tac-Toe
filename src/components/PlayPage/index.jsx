@@ -6,6 +6,7 @@ import GameBoard from '../GameBoard';
 import UserImg from '../../assets/man01.png';
 import BotImg from '../../assets/robot01.png';
 import { Navigate } from 'react-router-dom';
+import { generateBotName } from '../../utils/generateBotName';
 
 const Container = styled.div`
   width: 100%;
@@ -89,15 +90,6 @@ const PlayPage = () => {
   }
 
   const userDetails = useContext(UserContext);
-
-  const generateBotName = () => {
-    const storedBotName = sessionStorage.getItem('bot-name');
-    if ( storedBotName ) return storedBotName;
-    const uid = Math.floor(Math.random() * 9999999);
-    const botName = `c-Bot${uid}`;
-    sessionStorage.setItem('bot-name', botName);
-    return botName;
-  }
 
   const [botName, setBotName] = useState(generateBotName());
 

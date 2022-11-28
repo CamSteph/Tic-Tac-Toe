@@ -60,7 +60,7 @@ const CountdownTimer = ({timeValue = 1000, setGameHasStarted}) => {
           default:
             setNewTime(1);
             return;
-        }
+        };
       }
 
     }, timeValue);
