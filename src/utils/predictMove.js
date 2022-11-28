@@ -67,7 +67,7 @@ export const predictMove = (
     return 4;
   }
   else if ( arrOfTiles[2] === markToCheck && arrOfTiles[2] === arrOfTiles[8] && !arrOfTiles[5] ) {
-    return 4;
+    return 5;
   }
   else if ( arrOfTiles[0] === markToCheck && arrOfTiles[0] === arrOfTiles[2] && !arrOfTiles[1] ) {
     return 1;
