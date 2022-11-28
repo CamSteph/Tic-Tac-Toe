@@ -119,8 +119,7 @@ const WinnerModal = ({
             )
         }
         <RecordSection>
-          {/* Wins: {userDetails.wins || 0}, Losses: {userDetails.losses || 0} */}
-          Wins: <strong>{sessionStorage.getItem('wins') || 0}</strong>, Losses: <strong>{sessionStorage.getItem('losses') || 0}</strong>, Draws: <strong>{sessionStorage.getItem('draws') || 0}</strong>
+          Wins: {userDetails.wins || 0}, Losses: {userDetails.losses || 0}, Draws: {userDetails.draws || 0}
         </RecordSection>
         <OptionsSection>
           <OptionBtn invertedBtn={true} onClick={refreshPage}>Play Again</OptionBtn>

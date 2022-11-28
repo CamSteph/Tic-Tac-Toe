@@ -14,8 +14,8 @@ const UserProvider = ({children}) => {
       return {
         username: storedUsername,
         wins: Number(userWins) || 0,
-        lossess: Number(userLosses) || 0,
-        wins: Number(userDraws) || 0,
+        losses: Number(userLosses) || 0,
+        draws: Number(userDraws) || 0,
       }
     }
     return {};
