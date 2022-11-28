@@ -153,6 +153,8 @@ const GameBoard = ({botName}) => {
         for ( let i = 0; i < arrOfTiles.length + 80; i++ ) {
           const spaceToMove = predictMove('O', arrOfTiles);
           const spaceToDefend = predictMove('X', arrOfTiles);
+          console.log('move: ', spaceToMove)
+          console.log('defend: ', spaceToDefend)
           const space = Number(spaceToMove) >= 0 ? Number(spaceToMove) : Number(spaceToDefend) >= 0 ? Number(spaceToDefend) : Math.floor(Math.random() * 9);
           const tileEl = document.getElementById(`tile-${space + 1}`);
           if ( !arrOfTiles[space] && !tileEl.hasChildNodes()) {
@@ -164,8 +166,9 @@ const GameBoard = ({botName}) => {
             arrOfTiles[space] = 'O';
 
             setTimeout(() => {
-              return !winner ? checkWinner('O', arrOfTiles, setWinner, tallyScore, setIsADraw) : null;
+              if ( !winner ) checkWinner('O', arrOfTiles, setWinner, tallyScore, setIsADraw);
             }, 500);
+            break;
           }
         }
       }

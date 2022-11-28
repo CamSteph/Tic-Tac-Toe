@@ -1,3 +1,12 @@
+/**
+ * Sets the bot's name if not already set in session storage
+ * 
+ * @example
+   generateBotName();
+ * 
+ * @returns string
+ */
+
 
 export const generateBotName = () => {
   const storedBotName = sessionStorage.getItem('bot-name');
