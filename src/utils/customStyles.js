@@ -6,4 +6,4 @@ export const customStyles = {
   "light_01" : "#fff",
   "light_02" : "#ccc",
   "accent_01" : "#00CED1",
-}
+};

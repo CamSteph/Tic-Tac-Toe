@@ -82,7 +82,6 @@ const RecordSection = styled.div`
 const WinnerModal = ({
   winningUser,
   userDetails,
-  setWinner,
   isADraw,
 }) => {
 
@@ -119,7 +118,7 @@ const WinnerModal = ({
             )
         }
         <RecordSection>
-          Wins: {userDetails.wins || 0}, Losses: {userDetails.losses || 0}, Draws: {userDetails.draws || 0}
+          Wins: <strong>{userDetails.wins || 0}</strong>, Losses: <strong>{userDetails.losses || 0}</strong>, Draws: <strong>{userDetails.draws || 0}</strong>
         </RecordSection>
         <OptionsSection>
           <OptionBtn invertedBtn={true} onClick={refreshPage}>Play Again</OptionBtn>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { customStyles } from '../../utils/customStyles';
 import WinnerModal from '../WinnerModal';
@@ -62,16 +62,7 @@ const Tile = styled.div`
 
   &:nth-child(8) { 
     border-bottom: none;
-  }  
-
-  /* &:hover::before {
-    content: 'X';
-    position: absolute;
-    color: ${sessionStorage.getItem('user-color') || '#01b3e0'};
-    opacity: .5;
-    font-size: 9.5rem;
-    font-family: 'Secular One', sans-serif;
-  } */
+  }
 
   &:hover {
     background: ${customStyles.dark_01};
@@ -209,7 +200,7 @@ const GameBoard = ({botName}) => {
     return false;
   };
 
-  const autoDefenseCheck = (markToCheck) => {
+  const predictMove = (markToCheck) => {
     if ( arrOfTiles[0] === markToCheck && arrOfTiles[0] === arrOfTiles[1] && !arrOfTiles[2]) {
       return 2;
     }
@@ -272,76 +263,12 @@ const GameBoard = ({botName}) => {
     }
   };
 
-  const autoOffenseCheck = (markToCheck) => {
-    if ( arrOfTiles[0] === markToCheck && arrOfTiles[0] === arrOfTiles[1] && !arrOfTiles[2]) {
-      return 2;
-    }
-    else if ( arrOfTiles[1] === markToCheck && arrOfTiles[1] === arrOfTiles[2] && !arrOfTiles[0] ) {
-      return 0;
-    }
-    else if ( arrOfTiles[3] === markToCheck && arrOfTiles[3] === arrOfTiles[4] && !arrOfTiles[5] ) {
-      return 5;
-    }
-    else if ( arrOfTiles[4] === markToCheck && arrOfTiles[4] === arrOfTiles[5] && !arrOfTiles[3] ) {
-      return 3;
-    }
-    else if ( arrOfTiles[6] === markToCheck && arrOfTiles[6] === arrOfTiles[7] && !arrOfTiles[8] ) {
-      return 8;
-    }
-    else if ( arrOfTiles[7] === markToCheck && arrOfTiles[7] === arrOfTiles[8] && !arrOfTiles[6] ) {
-      return 6;
-    }
-    else if ( arrOfTiles[0] === markToCheck && arrOfTiles[0] === arrOfTiles[3] && !arrOfTiles[6] ) {
-      return 6;
-    }
-    else if ( arrOfTiles[3] === markToCheck && arrOfTiles[3] === arrOfTiles[6] && !arrOfTiles[0] ) {
-      return 0;
-    }
-    else if ( arrOfTiles[1] === markToCheck && arrOfTiles[1] === arrOfTiles[4] && !arrOfTiles[7] ) {
-      return 7;
-    }
-    else if ( arrOfTiles[4] === markToCheck && arrOfTiles[4] === arrOfTiles[7] && !arrOfTiles[0] ) {
-      return 0;
-    }
-    else if ( arrOfTiles[2] === markToCheck && arrOfTiles[2] === arrOfTiles[5] && !arrOfTiles[8] ) {
-      return 8;
-    }
-    else if ( arrOfTiles[4] === markToCheck && arrOfTiles[4] === arrOfTiles[8] && !arrOfTiles[0] ) {
-      return 0;
-    }
-    else if ( arrOfTiles[0] === markToCheck && arrOfTiles[0] === arrOfTiles[4] && !arrOfTiles[8] ) {
-      return 8;
-    }
-    else if ( arrOfTiles[4] === markToCheck && arrOfTiles[4] === arrOfTiles[8] && !arrOfTiles[0] ) {
-      return 0;
-    }
-    else if ( arrOfTiles[2] === markToCheck && arrOfTiles[2] === arrOfTiles[4] && !arrOfTiles[6] ) {
-      return 6;
-    }
-    else if ( arrOfTiles[2] === markToCheck && arrOfTiles[2] === arrOfTiles[6] && !arrOfTiles[4] ) {
-      return 4;
-    }
-    else if ( arrOfTiles[0] === markToCheck && arrOfTiles[0] === arrOfTiles[8] && !arrOfTiles[4] ) {
-      return 4;
-    }
-    else if ( arrOfTiles[0] === markToCheck && arrOfTiles[0] === arrOfTiles[6] && !arrOfTiles[3] ) {
-      return 3;
-    }
-    else if ( arrOfTiles[1] === markToCheck && arrOfTiles[1] === arrOfTiles[7] && !arrOfTiles[4] ) {
-      return 4;
-    }
-    else if ( arrOfTiles[2] === markToCheck && arrOfTiles[2] === arrOfTiles[8] && !arrOfTiles[5] ) {
-      return 4;
-    }
-  }
-
   const handleBotMove = () => {
       if ( !winner ) {
         for ( let i = 0; i < arrOfTiles.length + 80; i++ ) {
-          const winningSpace = autoOffenseCheck('O');
-          const spaceToDefend = autoDefenseCheck('X');
-          console.log(spaceToDefend);
-          const space = Number(winningSpace) >= 0 ? Number(winningSpace) : Number(spaceToDefend) >= 0 ? Number(spaceToDefend) : Math.floor(Math.random() * 9);
+          const spaceToMove = predictMove('O');
+          const spaceToDefend = predictMove('X');
+          const space = Number(spaceToMove) >= 0 ? Number(spaceToMove) : Number(spaceToDefend) >= 0 ? Number(spaceToDefend) : Math.floor(Math.random() * 9);
           const tileEl = document.getElementById(`tile-${space + 1}`);
           if ( !arrOfTiles[space] && !tileEl.hasChildNodes()) {
             const selectorEl = document.createElement('span');
@@ -392,8 +319,7 @@ const GameBoard = ({botName}) => {
         ( winner || isADraw ) && (
         <WinnerModal 
           winningUser={winner?.toUpperCase() === 'X' ? userDetails?.username : botName } 
-          userDetails={userDetails} 
-          setWinner={setWinner} 
+          userDetails={userDetails}  
           isADraw={isADraw}
         />)
       }
